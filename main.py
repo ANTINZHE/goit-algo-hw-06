@@ -13,7 +13,8 @@ class Field:
 class Name(Field):
     """ Клас для зберігання імені контакту """
     def __init__(self, value):
-        if not value.isalpha():
+        cleaned = value.replace(" ", "")
+        if not cleaned.isalpha():
             raise ValueError("Name can only contain letters")
         super().__init__(value)
 
@@ -21,7 +22,7 @@ class Name(Field):
 class Phone(Field):
     """ Клас для зберігання номера телефону """
     def __init__(self, value):
-        if len(value) != 10:
+        if len(value) != 10 or not value.isdigit():
             raise ValueError("Phone number must be 10 digits")
         super().__init__(value)
 
@@ -49,14 +50,14 @@ class Record:
         for i, phone in enumerate(self.phones):
             if phone.value == old_phone:
                 self.phones[i] = Phone(new_phone)
-                break
-            raise ValueError("Phone not found")
+                return
+        raise ValueError("Phone not found")
 
     def find_phone(self, phone):
         """ Метод пошуку за номером телефона"""
         for p in self.phones:
             if p.value == phone:
-                return p.value
+                return p
         return None
 
     def __str__(self):
@@ -80,7 +81,7 @@ class AddressBook(UserDict):
         """ Метод видалення запису """
         try:
             self.data.pop(name)
-        except ValueError:
+        except KeyError:
             print("Record not found")
 
     def __str__(self):
