@@ -39,18 +39,19 @@ class Record:
 
     def remove_phone(self, phone):
         """ Метод видалення номеру телефона"""
-        for p in self.phones:
-            if p.value == phone:
-                self.phones.remove(p)
-                return
+        phone = self.find_phone(phone)
+        if phone:
+            self.phones.remove(phone)
+            return
         raise ValueError("Phone not found")
 
     def edit_phone(self, old_phone, new_phone):
         """ Метод редагування номеру телефона """
-        for i, phone in enumerate(self.phones):
-            if phone.value == old_phone:
-                self.phones[i] = Phone(new_phone)
-                return
+        phone = self.find_phone(old_phone)
+        if phone:
+            self.remove_phone(old_phone)
+            self.add_phone(new_phone)
+            return
         raise ValueError("Phone not found")
 
     def find_phone(self, phone):
@@ -75,7 +76,7 @@ class AddressBook(UserDict):
         record = self.data.get(name)
         if record:
             return record
-        raise ValueError("Record not found")
+        return None
 
     def delete(self, name):
         """ Метод видалення запису """
