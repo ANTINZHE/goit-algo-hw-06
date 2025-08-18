@@ -80,10 +80,9 @@ class AddressBook(UserDict):
 
     def delete(self, name):
         """ Метод видалення запису """
-        try:
-            self.data.pop(name)
-        except KeyError:
-            print("Record not found")
+        if name in self.data:
+            return self.data.pop(name)
+        raise KeyError("Record not found")
 
     def __str__(self):
         return "\n".join(str(record) for record in self.data.values())
