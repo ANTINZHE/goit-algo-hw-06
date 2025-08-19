@@ -49,8 +49,8 @@ class Record:
         """ Метод редагування номеру телефона """
         phone = self.find_phone(old_phone)
         if phone:
-            self.remove_phone(old_phone)
             self.add_phone(new_phone)
+            self.remove_phone(old_phone)
             return
         raise ValueError("Phone not found")
 
